@@ -1,6 +1,6 @@
 const tableBody = document.getElementById('table-body');
 
-
+console.log(tableBody)
 let flights = [
     {
         time: "12:39",
@@ -10,7 +10,7 @@ let flights = [
         remarks: "CANCELED"
     },
     {
-        time: "13,21",
+        time: "13:21",
         destination: "DUBAI",
         flight: "DXB",
         gate: "A19",
@@ -33,16 +33,32 @@ let flights = [
 
 
 ];
-console.log(flights)
-function populateTable(){
-    for(flight in flights)
+
+function populateTable(flights){
+    for(const flight of flights){
         tableRow = document.createElement("tr")
-        
+       
        for(let flightDetails in flight){
             const tableCell = document.createElement("td");
-            console.log(flightDetails)
+            const word = Array.from(flight[flightDetails]);
+            //tableCell.innerText = flight[flightDetails];
+            tableRow.appendChild(tableCell);
+
+            console.log( flightDetails, flight[flightDetails])
+
+            for (const [index, letter] of word.entries()){
+                const letterElement = document.createElement('div');
+               
+                setTimeout(()=>{
+                    letterElement.classList.add('flip');
+                    letterElement.textContent = letter;
+                    tableCell.append(letterElement);
+                }, 100 * index);
+            }
        }
+       console.log('---------------------------------------')
        tableBody.append(tableRow);
     }
+}
 
-populateTable();
+populateTable(flights);
