@@ -4,17 +4,6 @@ const xhr = new XMLHttpRequest();
 let hour = 15;
 
 
-function onRequestHandler(){
-    if(this.readyState === 4 && this.status === 200){
-        const data = JSON.parse(this.response);
-        console.log('data',data)
-
-    }
-}
-
-xhr.addEventListener('load', onRequestHandler);
-xhr.open('GET', 'https://opensky-network.org/api/states/all');
-xhr.send();
 
 console.log(tableBody)
 
@@ -135,3 +124,16 @@ function generateTime(){
 //console.log('generate Random Number', generateRandomNumber());
 //console.log('generate Time', generateTime());
 setInterval(shuffleUp, 2000)
+
+//API
+function onRequestHandler(){
+    if(this.readyState === 4 && this.status === 200){
+        const data = JSON.parse(this.response);
+        console.log('data',data)
+
+    }
+}
+
+xhr.addEventListener('load', onRequestHandler);
+xhr.open('GET', 'https://opensky-network.org/api/states/all');
+xhr.send();
