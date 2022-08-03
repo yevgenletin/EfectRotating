@@ -1,6 +1,27 @@
 const tableBody = document.getElementById('table-body');
+const API_URL = 'https://opensky-network.org/api'
+const xhr = new XMLHttpRequest();
+let hour = 15;
+
+
+function onRequestHandler(){
+    if(this.readyState === 4 && this.status === 200){
+        const data = JSON.parse(this.response);
+        console.log('data',data)
+
+    }
+}
+
+xhr.addEventListener('load', onRequestHandler);
+xhr.open('GET', 'https://opensky-network.org/api/states/all');
+xhr.send();
 
 console.log(tableBody)
+
+const destinations = ['TOKYO', 'KIEV', 'MADRID', 'LISBOA', 'FRANCIA', 'HELSINKI'];
+const remarks = ['CANCELED', 'DELAYED', 'ONTIME'];
+let time = 15;
+
 let flights = [
     {
         time: "12:39",
@@ -61,4 +82,56 @@ function populateTable(flights){
     }
 }
 
-populateTable(flights);
+
+
+function shuffleUp(){
+    flights.shift();
+    flights.push({
+        time: generateTime(),
+        destination: destinations[Math.floor(Math.random()*destinations.length)],
+        flight: generateRandomLetter() + generateRandomLetter()+ "" + generateRandomNumber() + generateRandomNumber(),
+        gate: generateRandomLetter() + '' + generateRandomNumber(),
+        remarks: remarks[Math.floor(Math.random() * remarks.length)]
+    });
+    tableBody.textContent = ""
+    populateTable(flights)
+}
+
+function generateRandomLetter(){
+    const alphabet = 'ABCDEFGHJKLMNOPQRSTVUWXYZ'
+    return alphabet.charAt(Math.floor(Math.random()*alphabet.length))
+}
+
+function generateRandomNumber(maxNumber){
+    const number = '0123456789'
+    if(maxNumber){
+        const newNumbers = number.slice(0, maxNumber);
+        return maxNumber.charAt(Math.floor(Math.random() * maxNumber.length)) 
+    }
+    return number.charAt(Math.floor(Math.random()* number.length))
+}
+
+function generateTime(){
+    let displayHour = hour;
+    
+    if (hour < 24){
+        hour++;
+    }
+
+    if(hour >= 24){
+        hour = 1;
+        displayHour = hour;
+    }
+
+    if (hour > 10){
+        displayHour = 0 + hour;
+
+    }
+
+    return displayHour + ":"+ generateRandomNumber('5') + generateRandomNumber() 
+}
+
+//console.log('generate Random Leter', generateRandomLetter())
+//console.log('generate Random Number', generateRandomNumber());
+//console.log('generate Time', generateTime());
+setInterval(shuffleUp, 2000)
